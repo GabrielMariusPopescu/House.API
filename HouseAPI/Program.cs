@@ -1,5 +1,3 @@
-using HouseAPI.Repositories;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -20,26 +18,28 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-app.MapGet("/house", async (HouseRepository repo) =>
+app.MapGet("/api/houses", async (HouseRepository repo) =>
 {
     await Task.Delay(2000);
-    return repo.GetAll();
+    var list = repo.GetAll();
+
+    return list;
 });
 
-app.MapPost("/house", async (HouseRepository repo, House house) =>
+app.MapPost("/api/houses", async (HouseRepository repo, House house) =>
 {
     await Task.Delay(2000);
     repo.Add(house);
     return house;
 });
 
-app.MapGet("/bid/{houseId}", async (BidRepository repo, int houseId) =>
+app.MapGet("/api/bids/{houseId}", async (BidRepository repo, int houseId) =>
 {
     await Task.Delay(2000);
     return repo.GetBids(houseId);
 });
 
-app.MapPost("/bid", async (BidRepository repo, Bid bid) =>
+app.MapPost("/api/bids", async (BidRepository repo, Bid bid) =>
 {
     await Task.Delay(2000);
     repo.Add(bid);
